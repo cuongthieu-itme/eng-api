@@ -29,12 +29,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(
-    @Req() req,
-    //@Body() loginDto: LoginDto,
-  ) {
-    //return req.user;
-    console.log('req.user', req.user);
+  async login(@Req() req) {
     return this.authService.login(req.user.id);
   }
 
@@ -62,7 +57,6 @@ export class AuthController {
   @Get('google/callback')
   @UseGuards(GoogleAuthGuard)
   async googleCallback(@Req() req, @Res() res) {
-    // initiates the Google OAuth2 login flow
     const response = await this.authService.login(req.user.id);
     res.redirect(
       `${this.configService.get('base_url')}/login?token=${response.accessToken}&refreshToken=${response.refreshToken}`,
