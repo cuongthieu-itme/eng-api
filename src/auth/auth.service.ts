@@ -42,7 +42,7 @@ export class AuthService {
     // const refreshToken = this.jwtService.sign(payload, this.refreshTokenConfig);
     const { accessToken, refreshToken } = await this.generateTokens(userId);
     const hashedRefreshToken = await argon2.hash(refreshToken);
-    console.log('am i here?')
+    console.log('am i here?');
     console.log('herexxx', { userId, hashedRefreshToken });
     await this.userService.updateHashedRefreshedToken(
       userId,
