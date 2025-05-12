@@ -58,7 +58,6 @@ export class AuthService {
   async refreshToken(userId: string) {
     const { accessToken, refreshToken } = await this.generateTokens(userId);
     const hashedRefreshToken = await argon2.hash(refreshToken);
-    console.log('well here');
     await this.userService.updateHashedRefreshedToken(
       userId,
       hashedRefreshToken,
@@ -108,5 +107,25 @@ export class AuthService {
     const user = await this.userService.findByEmail(googleUser.email);
     if (user) return user;
     return await this.userService.create(googleUser);
+  }
+
+  async getMe(userId: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        id: true,
+        email: true,
+        firstName: true,
+        lastName: true,
+        role: true,
+        createdAt: true,
+        updatedAt: true,
+        // Omitting password and hashedRefreshToken for security
+      },
+    });
+
+    if (!user) throw new UnauthorizedException('User not found');
+
+    return user;
   }
 }

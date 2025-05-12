@@ -42,7 +42,6 @@ export class AuthController {
   @UseGuards(RefreshAuthGuard)
   @Post('refresh/tkn')
   async refreshToken(@Req() req) {
-    console.log('req.user', req);
     return this.authService.refreshToken(req.user.id);
   }
 
@@ -67,5 +66,11 @@ export class AuthController {
   @Post('signout')
   async signOut(@Req() req) {
     return this.authService.signOut(req.user.id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('me')
+  async getMe(@Req() req) {
+    return this.authService.getMe(req.user.id);
   }
 }
