@@ -120,7 +120,6 @@ export class AuthService {
         role: true,
         createdAt: true,
         updatedAt: true,
-        // Omitting password and hashedRefreshToken for security
       },
     });
 

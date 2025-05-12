@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { User } from '@prisma/client';
 import { PaginateService } from 'src/paginate/paginate.service';
 import { PaginateOptions } from 'src/paginate/types';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -31,27 +30,12 @@ export class UsersService {
           role: true,
           createdAt: true,
           updatedAt: true,
-          // Omitting password and hashedRefreshToken for security
         },
       },
       orderBy: {
         createdAt: 'desc',
       },
     });
-  }
-
-  async create(createUserDto: any) {
-    const user = await this.prisma.user.create({
-      data: createUserDto,
-    });
-    return user;
-  }
-
-  async findByEmail(email: string): Promise<User> {
-    const user = await this.prisma.user.findUnique({
-      where: { email },
-    });
-    return user;
   }
 
   async findOne(id: string) {
@@ -66,6 +50,41 @@ export class UsersService {
     return user;
   }
 
+  async create(createUserDto: any) {
+    const user = await this.prisma.user.create({
+      data: createUserDto,
+    });
+    return user;
+  }
+
+  async update(id: string, updateUserDto: any) {
+    const user = await this.prisma.user.update({
+      where: {
+        id,
+      },
+      data: {
+        ...updateUserDto,
+      },
+    });
+    return user;
+  }
+
+  async remove(id: string) {
+    const user = await this.prisma.user.delete({
+      where: {
+        id,
+      },
+    });
+    return user;
+  }
+
+  async findByEmail(email: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { email },
+    });
+    return user;
+  }
+
   async updateHashedRefreshedToken(id: string, hashedRefreshToken: any) {
     const user = await this.prisma.user.update({
       where: {
@@ -76,9 +95,5 @@ export class UsersService {
       },
     });
     return user;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} user`;
   }
 }
