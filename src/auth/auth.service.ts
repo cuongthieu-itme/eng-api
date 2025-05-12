@@ -1,15 +1,15 @@
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
-import { UsersService } from '../users/users.service';
-import * as bcryptjs from 'bcryptjs';
-import { CreateUserDto } from './dto';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { JwtService } from '@nestjs/jwt';
-import { AuthJwtPayload } from './types/auth-jwt-payload';
-import refreshJwtConfig from './config/refresh-jwt.config';
 import { ConfigType } from '@nestjs/config';
-import * as argon2 from 'argon2';
-import { CurrentUser } from './types/current-user.dto';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { JwtService } from '@nestjs/jwt';
+import * as argon2 from 'argon2';
+import * as bcryptjs from 'bcryptjs';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { UsersService } from '../users/users.service';
+import refreshJwtConfig from './config/refresh-jwt.config';
+import { CreateUserDto } from './dto';
+import { AuthJwtPayload } from './types/auth-jwt-payload';
+import { CurrentUser } from './types/current-user.dto';
 
 @Injectable()
 export class AuthService {

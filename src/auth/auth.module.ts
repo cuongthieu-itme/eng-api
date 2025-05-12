@@ -1,19 +1,19 @@
 import { Module } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { AuthController } from './auth.controller';
-import { UsersService } from '../users/users.service';
-import { LocalStrategy } from './strategies/local.strategy';
-import { JwtModule } from '@nestjs/jwt';
-import jwtConfig from './config/jwt.config';
 import { ConfigModule } from '@nestjs/config';
-import { JwtStrategy } from './strategies/jwt.strategy';
-import refreshJwtConfig from './config/refresh-jwt.config';
-import { RefreshJwtStrategy } from './strategies/refresh.strategy';
 import { APP_GUARD } from '@nestjs/core';
+import { JwtModule } from '@nestjs/jwt';
+import { UsersService } from '../users/users.service';
+import { AuthController } from './auth.controller';
+import { AuthService } from './auth.service';
+import googleOauthConfig from './config/google-oauth.config';
+import jwtConfig from './config/jwt.config';
+import refreshJwtConfig from './config/refresh-jwt.config';
 import { JwtAuthGuard } from './guards/jwt-auth/jwt-auth.guard';
 import { RolesGuard } from './guards/roles/roles.guard';
-import googleOauthConfig from './config/google-oauth.config';
 import { GoogleStrategy } from './strategies/google.strategy';
+import { JwtStrategy } from './strategies/jwt.strategy';
+import { LocalStrategy } from './strategies/local.strategy';
+import { RefreshJwtStrategy } from './strategies/refresh.strategy';
 
 @Module({
   imports: [

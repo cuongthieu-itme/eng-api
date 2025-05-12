@@ -9,14 +9,14 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { AuthService } from './auth.service';
+import { Public } from './decorator';
 import { CreateUserDto } from './dto';
+import { GoogleAuthGuard } from './guards/google-auth/google-auth.guard';
+import { JwtAuthGuard } from './guards/jwt-auth/jwt-auth.guard';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { RefreshAuthGuard } from './guards/refresh-auth/refresh-auth.guard';
-import { JwtAuthGuard } from './guards/jwt-auth/jwt-auth.guard';
-import { Public } from './decorator';
-import { GoogleAuthGuard } from './guards/google-auth/google-auth.guard';
-import { ConfigService } from '@nestjs/config';
 
 @Controller('auth')
 export class AuthController {
