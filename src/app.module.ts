@@ -6,8 +6,10 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { CourseTopicsModule } from './course-topics/course-topics.module';
 import { CoursesModule } from './courses/courses.module';
+import { LecturesModule } from './lectures/lectures.module';
 import { PaginateModule } from './paginate/paginate.module';
 import { PrismaModule } from './prisma/prisma.module';
+import { QuestionsModule } from './questions/questions.module';
 import { UsersModule } from './users/users.module';
 
 @Module({
@@ -17,6 +19,8 @@ import { UsersModule } from './users/users.module';
     AuthModule,
     CoursesModule,
     CourseTopicsModule,
+    LecturesModule,
+    QuestionsModule,
     ConfigModule.forRoot(),
     EventEmitterModule.forRoot(),
     PaginateModule,
