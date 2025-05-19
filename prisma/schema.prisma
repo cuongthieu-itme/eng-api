@@ -8,6 +8,18 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  ADMIN
+  TEACHER
+  STUDENT
+}
+
+enum LectureStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
 model User {
   id                 String   @id @default(auto()) @map("_id") @db.ObjectId
   firstName          String
@@ -16,14 +28,86 @@ model User {
   email              String   @unique
   password           String
   hashedRefreshToken String?
-  role               Role     @default(USER)
+  role               Role     @default(STUDENT)
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
+
+  coursesCreated   Course[]   @relation("CourseCreatedBy")
+  lecturesCreated  Lecture[]  @relation("LectureCreatedBy")
+  questionsCreated Question[] @relation("QuestionCreatedBy")
 
   @@map("users")
 }
 
-enum Role {
-  USER
-  ADMIN
+model Course {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String?
+  subject     String
+  isPublished Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  createdById String @db.ObjectId
+  createdBy   User   @relation("CourseCreatedBy", fields: [createdById], references: [id])
+
+  topics   CourseTopic[]
+  lectures Lecture[]
+
+  @@map("courses")
+}
+
+model CourseTopic {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  courseId String @db.ObjectId
+  topic    String
+
+  course Course @relation(fields: [courseId], references: [id])
+
+  @@unique([courseId, topic])
+  @@map("course_topics")
+}
+
+model Lecture {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  courseId    String @db.ObjectId
+  createdById String @db.ObjectId
+
+  title      String
+  content    String
+  outline    String
+  pptxUrl    String?
+  mindmapUrl String?
+  status     LectureStatus @default(DRAFT)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  course    Course     @relation(fields: [courseId], references: [id])
+  createdBy User       @relation("LectureCreatedBy", fields: [createdById], references: [id])
+  questions Question[]
+
+  @@map("lectures")
+}
+
+model Question {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  lectureId   String @db.ObjectId
+  createdById String @db.ObjectId
+
+  question      String
+  optionA       String
+  optionB       String
+  optionC       String
+  optionD       String
+  correctAnswer String // Use validation in application logic (values: 'A', 'B', 'C', 'D')
+  explanation   String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  lecture   Lecture @relation(fields: [lectureId], references: [id])
+  createdBy User    @relation("QuestionCreatedBy", fields: [createdById], references: [id])
+
+  @@map("questions")
 }

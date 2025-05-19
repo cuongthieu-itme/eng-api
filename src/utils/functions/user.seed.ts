@@ -26,7 +26,7 @@ export const seedUsers = async () => {
         lastName: 'Doe',
         email: 'user@gmail.com',
         password: userPassword,
-        role: Role.USER,
+        role: Role.STUDENT,
         phoneNumber: '0123456781',
       },
     });
